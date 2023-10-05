@@ -72,10 +72,11 @@ The coordinate axes are correctly aligned with the target, but taking the image 
 <img src="results/11-5.realworld_ud_check_relative_pose_l2c_3.png" width = "80%" /> <br/>
 <img src="results/11-6.realworld_ud_check_relative_pose_l2c_3.png" width = "80%" /> <br/>
 1. __Conclusion__ <br/>
+If the three planes of the target can be identified at each sensor, a fully automatic algorithm can be designed.
 Checkered patterns of three different sizes enable the camera to identify the three planes.
 Using a target with different plane sizes allows LiDAR to identify the three planes.
 However, these conditions require the sensor to fully observe the target.
-We think that this preparation made the use of the algorithm complex and cumbersome. <br/>
+We think that these preparations make the use of the algorithm complex and cumbersome. <br/>
 In our method, if possible, we recommend choosing a sufficiently large target and placing it close to the sensors.
 It doesn’t matter if the target is not fully observed in LiDAR’s FoV.
 Observation of many points leads to more accurate results. <br/>
