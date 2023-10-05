@@ -73,8 +73,8 @@ The coordinate axes are correctly aligned with the target, but taking the image 
 <img src="results/11-6.realworld_ud_check_relative_pose_l2c_3.png" width = "80%" /> <br/>
 1. __Conclusion__ <br/>
 Checkered patterns of three different sizes enable the camera to identify the three planes.
-Using a target with different plane sizes allows LiDAR to identify the three planes. <br/>
-However, these conditions require the sensor to fully observe the target.
+Using a target with different plane sizes allows LiDAR to identify the three planes.
+However, these conditions require the sensor to fully observe the target. <br/>
 In our method, if possible, we recommend choosing a sufficiently large target and placing it close to the sensors.
 It doesn’t matter if the target is not fully observed in LiDAR’s FoV.
 Observation of many points leads to more accurate results. <br/>
