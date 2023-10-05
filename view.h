@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 
-void sortingPoints(Mat src_, Mat& dst_, Mat view_rotation_, Mat view_translation_)
+void sortingPoints(Mat src_, Mat& dst_, Mat const& view_rotation_, Mat const& view_translation_)
 {
 	Mat P;
 	calcRt(src_, P, view_rotation_, view_translation_);
@@ -13,7 +13,7 @@ void sortingPoints(Mat src_, Mat& dst_, Mat view_rotation_, Mat view_translation
 	for (int i = 0; i < indice.rows; i++) dst_.push_back(src_.row(indice.at<int>(i)));
 }
 
-void filterOutOfCamera(Mat src_, Mat& dst_, vector<Scalar>& colorV_, Mat img_, Mat camera_intrinsic_, Mat l2c_rotation_, Mat l2c_translation_)
+void filterOutOfCamera(Mat const& src_, Mat& dst_, vector<Scalar>& colorV_, Mat const& img_, Mat const& camera_intrinsic_, Mat const& l2c_rotation_, Mat const& l2c_translation_)
 {
 	colorV_.clear();
 
@@ -104,7 +104,7 @@ void on_mouseEvent(int event_, int x_, int y_, int flags_, void* param_)
 	}
 }
 
-void checkPointCloudIn3D(Calibration calb_, Gt gt_, double axis_len_ = 1)
+void checkPointCloudIn3D(Calibration const& calb_, Gt const& gt_, double axis_len_ = 1)
 {
 	if (calb_.pointCloud.empty()) return;
 
@@ -203,7 +203,7 @@ void checkPointCloudIn3D(Calibration calb_, Gt gt_, double axis_len_ = 1)
 	}
 }
 
-void checkCameraGt(Args args_, Blensor bls_, Calibration calb_, Gt gt_)
+void checkCameraGt(Args const& args_, Blensor const& bls_, Calibration const& calb_, Gt const& gt_)
 {
 	//initialize
 	int axis_thickness = 2;
@@ -276,7 +276,7 @@ void checkCameraGt(Args args_, Blensor bls_, Calibration calb_, Gt gt_)
 	waitKey(0);
 }
 
-void checkChessboardCorners(Args args_, Calibration& calb_)
+void checkChessboardCorners(Args const& args_, Calibration& calb_)
 {
 	//initialize
 	int axis_thickness = 2;
@@ -331,7 +331,7 @@ void checkChessboardCorners(Args args_, Calibration& calb_)
 	waitKey(0);
 }
 
-void checkCameraPose(Args args_, Calibration calb_)
+void checkCameraPose(Args const& args_, Calibration const& calb_)
 {
 	//initialize
 	int axis_thickness = 2;
@@ -415,7 +415,7 @@ void checkCameraPose(Args args_, Calibration calb_)
 	waitKey(0);
 }
 
-void checkLidarPose(Args args_, Calibration calb_, double axis_len_ = 1)
+void checkLidarPose(Args const& args_, Calibration const& calb_, double axis_len_ = 1)
 {
 	//initialize
 	int axis_thickness = 3;
@@ -480,7 +480,7 @@ void checkLidarPose(Args args_, Calibration calb_, double axis_len_ = 1)
 	waitKey(0);
 }
 
-void checkRelativePoseL2C(Calibration calb_, double dist_range_ = 20, bool calibrate_ = true)
+void checkRelativePoseL2C(Calibration const& calb_, double dist_range_ = 20, bool calibrate_ = true)
 {
 	//initialize
 	int point_size = 3;
@@ -588,7 +588,7 @@ void checkRelativePoseL2C(Calibration calb_, double dist_range_ = 20, bool calib
 	}
 }
 
-void checkRelativePoseC2L(Calibration calb_)
+void checkRelativePoseC2L(Calibration const& calb_)
 {
 	//initialize
 	int point_size = 3;
@@ -675,7 +675,7 @@ void checkRelativePoseC2L(Calibration calb_)
 	}
 }
 
-void checkRelativePoseWithTarget(Args args_, Calibration calb_, double axis_len_ = 1)
+void checkRelativePoseWithTarget(Args const& args_, Calibration const& calb_, double axis_len_ = 1)
 {
 	//initialize
 	int axis_thickness = 2;
@@ -829,7 +829,7 @@ void checkRelativePoseWithTarget(Args args_, Calibration calb_, double axis_len_
 	}
 }
 
-void checkResultIn3D(Calibration calb_, Gt gt_, double gt_axis_len_ = 2, double pred_axis_len_ = 1)
+void checkResultIn3D(Calibration const& calb_, Gt const& gt_, double gt_axis_len_ = 2, double pred_axis_len_ = 1)
 {
 	for (int i = 0; i < 3; i++) if (calb_.inlier_pointClouds[i].rows == 0) return;
 

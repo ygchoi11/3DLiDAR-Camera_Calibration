@@ -43,7 +43,7 @@ double radianToDegree(double radian_)
 	return radian_ * ((double)180 / (double)CV_PI);
 }
 
-double getRotationError(Mat r1_, Mat r2_)
+double getRotationError(Mat const& r1_, Mat const& r2_)
 {
 	double traceVal = trace(r1_.t() * r2_)[0];
 	traceVal = MAX(-1., MIN(3., traceVal));
@@ -51,7 +51,7 @@ double getRotationError(Mat r1_, Mat r2_)
 	return acos((traceVal - 1.) / 2.);
 }
 
-void printError(Calibration calb_, Gt gt_)
+void printError(Calibration const& calb_, Gt const& gt_)
 {
 	Mat error_tvec = gt_.l2c_tvec - calb_.l2c_tvec;
 	Mat error_Rmat = gt_.l2c_Rmat.t() * calb_.l2c_Rmat;
@@ -73,7 +73,7 @@ void printError(Calibration calb_, Gt gt_)
 	cout << endl;
 }
 
-void rvec2quat(Mat r_, Mat& q_)
+void rvec2quat(Mat const& r_, Mat& q_)
 {
 	Mat dst;
 	double theta = norm(r_);
@@ -84,7 +84,7 @@ void rvec2quat(Mat r_, Mat& q_)
 	dst.copyTo(q_);
 }
 
-void quat2rvec(Mat q_, Mat& r_)
+void quat2rvec(Mat const& q_, Mat& r_)
 {
 	double q0 = q_.at<double>(0);
 	double q1 = q_.at<double>(1);
@@ -98,7 +98,7 @@ void quat2rvec(Mat q_, Mat& r_)
 	dst.copyTo(r_);
 }
 
-Mat wMean(Mat src_, Mat w_)
+Mat wMean(Mat const& src_, Mat const& w_)
 {
 	int paramDim = src_.cols;
 	Mat w = w_ / sum(w_)[0];
@@ -109,7 +109,7 @@ Mat wMean(Mat src_, Mat w_)
 	return dst;
 }
 
-void zyxEulerToRotation(Mat src_, Mat& dst_)
+void zyxEulerToRotation(Mat const& src_, Mat& dst_)
 {
 	Mat src_x, src_y, src_z;
 
@@ -124,7 +124,7 @@ void zyxEulerToRotation(Mat src_, Mat& dst_)
 	dst_ = src_z * src_y * src_x;
 }
 
-void rotationToZyxEuler(Mat src_, Mat& dst_)
+void rotationToZyxEuler(Mat const& src_, Mat& dst_)
 {
 	if (abs(src_.at<double>(2, 0)) != 1)
 	{
@@ -163,12 +163,12 @@ void rotationToZyxEuler(Mat src_, Mat& dst_)
 	}
 }
 
-bool checkPointInROI(Rect r_, Point p_)
+bool checkPointInROI(Rect const& r_, Point const& p_)
 {
 	return (r_.tl().x <= p_.x) && (r_.br().x >= p_.x) && (r_.tl().y <= p_.y) && (r_.br().y >= p_.y);
 }
 
-void calcRt(Mat src_, Mat& dst_, Mat rotation_, Mat translation_)
+void calcRt(Mat const& src_, Mat& dst_, Mat const& rotation_, Mat const& translation_)
 {
 	if (src_.empty()) return;
 
@@ -179,7 +179,7 @@ void calcRt(Mat src_, Mat& dst_, Mat rotation_, Mat translation_)
 	P.copyTo(dst_);
 }
 
-void filterNegativeDepth(Mat src_, Mat& dst_, Mat view_rotation_, Mat view_translation_)
+void filterNegativeDepth(Mat const& src_, Mat& dst_, Mat const& view_rotation_, Mat const& view_translation_)
 {
 	Mat P;
 	calcRt(src_, P, view_rotation_, view_translation_);
@@ -212,7 +212,7 @@ void project3DTo2D(Calibration& calb_, Mat& points_, Mat& dists_)
 	for (int i = 0; i < 3; i++) calb_.uvPoints.col(i) /= calb_.uvPoints.col(2);
 }
 
-void readBlensorFiles(Args args_, Blensor& bls_, Calibration& calb_)
+void readBlensorFiles(Args const& args_, Blensor& bls_, Calibration& calb_)
 {
 	//read images
 	calb_.cameraImg = imread(args_.path_camera_img);
@@ -288,7 +288,7 @@ void readBlensorFiles(Args args_, Blensor& bls_, Calibration& calb_)
 	fs_lidar.close();
 }
 
-void readData(Args args_, Calibration& calb_)
+void readData(Args const& args_, Calibration& calb_)
 {
 	//read images
 	calb_.cameraImg = imread(args_.path_camera_img);
@@ -321,7 +321,7 @@ void readData(Args args_, Calibration& calb_)
 	fs_lidar.close();
 }
 
-void assignBlensorGt(Args args_, Blensor bls_, Gt& gt_)
+void assignBlensorGt(Args const& args_, Blensor const& bls_, Gt& gt_)
 {
 	//set new world coordinate in a corner of object
 	//gt location and rotation are based on new world coordinate
@@ -385,7 +385,7 @@ void assignBlensorGt(Args args_, Blensor bls_, Gt& gt_)
 	for (int i = 0; i < 4; i++) gt_.axis_vectors2D.at<Vec2d>(i) = Point2d(corners2D.at<double>(i, 0), corners2D.at<double>(i, 1));
 }
 
-Mat getPointCloudInROI(Calibration calb_, double dist_range_)
+Mat getPointCloudInROI(Calibration& calb_, double dist_range_)
 {
 	//calculate uv points & distance color
 	Mat points, dists, dist_colors;
@@ -419,7 +419,7 @@ Mat getPointCloudInROI(Calibration calb_, double dist_range_)
 	return pcInROI;
 }
 
-void fitPlanes(Mat src_, Mat& dst_, Mat pointClouds_, double inlier_distance_)
+void fitPlanes(Mat const& src_, Mat& dst_, Mat const& pointClouds_, double inlier_distance_)
 {
 	Mat d[3];
 	for (int i = 0; i < 3; i++)
@@ -463,7 +463,7 @@ void fitPlanes(Mat src_, Mat& dst_, Mat pointClouds_, double inlier_distance_)
 	dst_ = dst.clone();
 }
 
-void findRotationSamples(Mat src_, vector<Mat>& dst_)
+void findRotationSamples(Mat const& src_, vector<Mat>& dst_)
 {
 	Mat a[3], A, dst[4], w, u, vt;
 
@@ -499,7 +499,7 @@ void findRotationSamples(Mat src_, vector<Mat>& dst_)
 	for (int i = 0; i < 4; i++) dst_.push_back(dst[i]);
 }
 
-void findOriginSamples(vector<Mat> src_, vector<Mat>& dst_, Mat init_three_planes_, Mat pointClouds_, double inlier_distance_)
+void findOriginSamples(vector<Mat> const& src_, vector<Mat>& dst_, Mat const& init_three_planes_, Mat const& pointClouds_, double inlier_distance_)
 {
 	Mat d[3];
 	for (int i = 0; i < 3; i++)
@@ -547,7 +547,7 @@ void findOriginSamples(vector<Mat> src_, vector<Mat>& dst_, Mat init_three_plane
 	}
 }
 
-void checkAxesDirection(Mat src_, Mat& dst_, Mat axis_origin_, Mat pointClouds_, double inlier_distance_)
+void checkAxesDirection(Mat const& src_, Mat& dst_, Mat const& axis_origin_, Mat const& pointClouds_, double inlier_distance_)
 {
 	src_.copyTo(dst_);
 
@@ -596,7 +596,7 @@ void checkAxesDirection(Mat src_, Mat& dst_, Mat axis_origin_, Mat pointClouds_,
 	}
 }
 
-void getRvecs(vector<Mat> src_, Mat& dst_)
+void getRvecs(vector<Mat> const& src_, Mat& dst_)
 {
 	//align rotation Mat
 	for (int i = 1; i < src_.size(); i++)
@@ -631,7 +631,7 @@ void getRvecs(vector<Mat> src_, Mat& dst_)
 	}
 }
 
-Mat scoreParamVec(Mat samples_, Mat pointClouds_, double threshold_, int score_method_ = MSC)
+Mat scoreParamVec(Mat const& samples_, Mat const& pointClouds_, double threshold_, int score_method_ = MSC)
 {
 	double squared_thr = threshold_ * threshold_;
 
@@ -668,7 +668,7 @@ Mat scoreParamVec(Mat samples_, Mat pointClouds_, double threshold_, int score_m
 	return scores;
 }
 
-Mat findBestScoredParamVec(Mat samples_, Mat scores_)
+Mat findBestScoredParamVec(Mat const& samples_, Mat const& scores_)
 {
 	double minVal, maxVal;
 	int minIdx[2], maxIdx[2];
@@ -677,7 +677,7 @@ Mat findBestScoredParamVec(Mat samples_, Mat scores_)
 	return samples_.row(maxIdx[0]).t();
 }
 
-Mat findDominantParamVec(Mat samples_, Mat pointClouds_, int proposed_augmentation_max_, double threshold_, int score_method_ = MSC)
+Mat findDominantParamVec(Mat const& samples_, Mat const& pointClouds_, int proposed_augmentation_max_, double threshold_, int score_method_ = MSC)
 {
 	if (samples_.rows == 0) return Mat();
 	else if (samples_.rows == 1) return samples_;
@@ -742,7 +742,7 @@ Mat findDominantParamVec(Mat samples_, Mat pointClouds_, int proposed_augmentati
 	return dst;
 }
 
-void findInlierPointCloud(Args args_, Calibration& calb_, Mat pointClouds_)
+void findInlierPointCloud(Args const& args_, Calibration& calb_, Mat const& pointClouds_)
 {
 	if (pointClouds_.rows == 0) return;
 	for (int i = 0; i < 3; i++) calb_.inlier_pointClouds[i].release();
@@ -765,7 +765,7 @@ void findInlierPointCloud(Args args_, Calibration& calb_, Mat pointClouds_)
 	}
 }
 
-void findInitCoordinate(Args args_, Calibration& calb_, bool use_roi_ = false, double dist_range_ = 20)
+void findInitCoordinate(Args const& args_, Calibration& calb_, bool use_roi_ = false, double dist_range_ = 20)
 {
 	//crop target region
 	Mat pcInROI;
@@ -932,7 +932,7 @@ void findInitCoordinate(Args args_, Calibration& calb_, bool use_roi_ = false, d
 	findInlierPointCloud(args_, calb_, pcInROI);
 }
 
-void removeOutlierPointCloud(Args args_, Calibration& calb_)
+void removeOutlierPointCloud(Args const& args_, Calibration& calb_)
 {
 	//based on distance with plane
 	for (int i = 0; i < 3; i++) if (calb_.inlier_pointClouds[i].rows == 0) return;
@@ -975,7 +975,7 @@ void removeOutlierPointCloud(Args args_, Calibration& calb_)
 	}
 }
 
-void removeOutlierPointCloud2(Args args_, Calibration& calb_)
+void removeOutlierPointCloud2(Args const& args_, Calibration& calb_)
 {
 	//based on distance with the target region
 	for (int i = 0; i < 3; i++) if (calb_.inlier_pointClouds[i].rows == 0) return;
@@ -1040,7 +1040,7 @@ void removeOutlierPointCloud2(Args args_, Calibration& calb_)
 	for (int i = 0; i < 3; i++) temp_inlier_pointClouds[i].copyTo(calb_.inlier_pointClouds[i]);
 }
 
-void refinement(Args args_, Calibration& calb_)
+void refinement(Args const& args_, Calibration& calb_)
 {
 	for (int i = 0; i < 3; i++) if (calb_.inlier_pointClouds[i].rows == 0) return;
 
@@ -1172,7 +1172,7 @@ void refinement(Args args_, Calibration& calb_)
 	removeOutlierPointCloud(args_, calb_);
 }
 
-void assignChessboardCornersIn3D(Args args_, Calibration& calb_)
+void assignChessboardCornersIn3D(Args const& args_, Calibration& calb_)
 {
 	Point3i chessAxes[3];
 	chessAxes[0] = Point3i(0, 1, 2);
@@ -1196,7 +1196,7 @@ void assignChessboardCornersIn3D(Args args_, Calibration& calb_)
 	}
 }
 
-void findChessboardCorners(Args args_, Calibration& calb_)
+void findChessboardCorners(Args const& args_, Calibration& calb_)
 {
 	Mat grayImg;
 	cvtColor(calb_.cameraImg, grayImg, COLOR_BGR2GRAY);
@@ -1288,7 +1288,7 @@ void findChessboardCorners(Args args_, Calibration& calb_)
 	}
 }
 
-void calcRelativePose(Args args_, Calibration& calb_, int pnp_method_)
+void calcRelativePose(Args const& args_, Calibration& calb_, int pnp_method_)
 {
 	//assign 3D points in lidar coordinates
 	Mat points3D;
