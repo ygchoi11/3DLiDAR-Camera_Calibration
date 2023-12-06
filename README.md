@@ -10,6 +10,7 @@ __The simulation is available [here](https://www.blensor.org/)__. <br/>
 In general, the order and direction of the LiDAR coordinate system are different from the camera coordinate system.
 The test data and program assume that the LiDAR and camera coordinate systems are on the same axis order and direction.
 If you use this program with other data, you must consider this.
+For example, change the coordinate axes and direction of the point cloud to be the same as the camera coordinate system and then run it.
 
 ## Examples
 There are four examples in `tester.h`: <br/>
