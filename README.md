@@ -1,7 +1,7 @@
 # 3DLiDAR-Camera_Calibration
 
 ## Introduction
-Implementation of paper - [Sample Pose Augmentation and Adaptive Weight-Based Refinement for 3D LiDAR-Camera Extrinsic Calibration Using an Orthogonal Trihedron](10.1109/TIM.2023.3336440) <br/>
+Implementation of paper - [Sample Pose Augmentation and Adaptive Weight-Based Refinement for 3D LiDAR-Camera Extrinsic Calibration Using an Orthogonal Trihedron](https://ieeexplore.ieee.org/document/10330001) <br/>
 This is an example for testing an offline 3D LiDAR-camera extrinsic calibration, based on an orthogonal trihedral target with a checkered pattern on each plane.
 It is implemented using OpenCV 4.6.0. __Please refer to OpenCV installation and settings [here](https://opencv.org/).__ <br/>
 The synthetic data was generated using Blensor. The Blensor is a free open-source simulation package for LIDAR/LADAR and Kinect sensors.
