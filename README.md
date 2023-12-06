@@ -6,6 +6,11 @@ It is implemented using OpenCV 4.6.0. __Please refer to OpenCV installation and 
 The synthetic data was generated using Blensor. The Blensor is a free open-source simulation package for LIDAR/LADAR and Kinect sensors.
 __The simulation is available [here](https://www.blensor.org/)__. <br/>
 
+## Note
+In general, the order and direction of the LiDAR coordinate system are different from the camera coordinate system.
+The test data and program assume that the LiDAR and camera coordinate systems are on the same axis order and direction.
+If you use this program with other data, you must consider this.
+
 ## Examples
 There are four examples in `tester.h`: <br/>
 `testBlensor()`, `findCameraIntrinsicInReal()`, `calibrateInReal()`, `calibrateInReal2()`.
