@@ -84,3 +84,16 @@ The result below shows that the algorithm works even though only some points on 
 <img src="results/12-1.realworld_pt_check_relative_pose_l2c.png" width = "80%" /> <br/>
 <img src="results/12-2.realworld_pt_check_relative_pose_l2c.png" width = "80%" /> <br/>
 
+# Citations
+The following is a BibTeX entry for the paper that you should cite if you use this algorithm (Early Access).
+```
+@ARTICLE{10330001,
+  author={Choi, Yeongyu and Park, Ju H. and Jung, Ho-Youl},
+  journal={IEEE Transactions on Instrumentation and Measurement}, 
+  title={Sample Pose Augmentation and Adaptive Weight-Based Refinement for 3D LiDAR-Camera Extrinsic Calibration Using an Orthogonal Trihedron}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={1-1},
+  doi={10.1109/TIM.2023.3336440}}
+```
